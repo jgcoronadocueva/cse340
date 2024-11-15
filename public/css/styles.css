@@ -4,3 +4,101 @@
 *:after {
   box-sizing: border-box;
 }
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+/******* HEADER ***************/
+/* Styling the header */
+#top-header {
+  display: flex;
+  /* Use Flexbox to layout the header content */
+  justify-content: space-between;
+  /* Distribute space between the span and div */
+  align-items: center;
+  /* Vertically align items in the center */
+  background-color: #333;
+  /* Dark background for the header */
+  padding: 10px 20px;
+  /* Add padding to the header */
+}
+
+/* Styling the site name */
+.siteName a {
+  text-decoration: none;
+  /* Remove underline from the link */
+  color: white;
+  /* Text color */
+  font-size: 1.5em;
+  /* Increase font size for the site name */
+  font-weight: bold;
+  /* Make the site name bold */
+}
+
+/* Styling the tools section (right-aligned content) */
+#tools a {
+  text-decoration: none;
+  /* Remove underline from the link */
+  color: #f39c12;
+  /* Color for the account link */
+  font-weight: bold;
+  /* Make the account link bold */
+  transition: color 0.3s ease;
+  /* Smooth transition for hover effect */
+}
+
+/* Hover effect on the account link */
+#tools a:hover {
+  color: #fff;
+  /* Change color to white on hover */
+}
+
+
+/******* NAVIGATION ***************/
+/* Styling the nav container */
+nav {
+  background-color: #333;
+  /* Dark background for the navigation */
+  padding: 10px 0;
+  width: 100%;
+}
+
+/* Styling the unordered list */
+nav ul {
+  list-style: none;
+  /* Removes default bullet points */
+  display: flex;
+  /* Aligns list items horizontally */
+  justify-content: space-between;
+  /* Space between the list items */
+  width: 100%;
+}
+
+/* Styling the list items */
+nav ul li {
+  flex-grow: 1;
+  /* Makes each li take up equal space */
+  text-align: center;
+  /* Centers text within each li */
+  padding: 10px 0;
+  /* Adds some padding to make the text less cramped */
+}
+
+nav ul li a {
+  text-decoration: none;
+  /* Removes underline from links */
+  color: white;
+  /* Text color */
+  font-weight: bold;
+  /* Makes text bold */
+  display: block;
+  /* Makes the anchor fill the entire li */
+  transition: color 0.3s ease;
+  /* Smooth transition for color change on hover */
+}
+
+nav ul li a:hover {
+  color: #f39c12;
+  /* Change text color on hover */
+}
