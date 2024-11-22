@@ -1,0 +1,11 @@
+<%# * Constructs the nav HTML unordered list %>
+
+    <% if (title) { %>
+        <h1>
+            <%= title %>
+        </h1>
+        <% } else { res.redirect('/') } %>
+
+            <%- grid %>
+
+                <%# messages() %>
