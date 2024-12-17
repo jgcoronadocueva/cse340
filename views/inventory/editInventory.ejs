@@ -1,0 +1,55 @@
+<h1 class="form-title"><%- title %></h1>
+<%- messages() %>
+        <% if (errors) { %>
+                <ul class="flash-message">
+                        <% errors.array().filter(error=> error.msg !== "Invalid value").forEach(error=> { %>
+                                <li>
+                                        <%= error.msg %>
+                                </li>
+                                <% }) %>
+                </ul>
+                <% } %>
+
+                        <form class="form" id=updateForm action="/inv/update" method="post">
+
+                                <label>Classification
+                                        <%- classifications %>
+                                </label>
+                                <small>Required</small>
+                                <label>Make<input type="text" value="<%- locals.inv_make %>"
+                                                placeholder="Enter the vehicle brand" name="inv_make"></label>
+                                <small>Required</small>
+                                <label>Model<input type="text" value="<%- locals.inv_model %>"
+                                                placeholder="Enter the vehicle model" name="inv_model"></label>
+                                <small>Required</small>
+                                <label>Year<input type="number" value="<%- locals.inv_year %>"
+                                                placeholder="Enter the year" name="inv_year" min="1900"
+                                                max="2050"></label>
+                                <small>Required</small>
+                                <label>Description
+                                        <textarea placeholder="Enter a description for the vehicle"
+                                                name="inv_description" maxlength="100"
+                                                rows="5"><%- locals.inv_description %></textarea>
+                                </label>
+                                <small>Max. 100 characters. Required</small>
+                                <label>Price<input type="number" value="<%- locals.inv_price %>"
+                                                placeholder="Enter the price" name="inv_price"></label>
+                                <small>Required</small>
+                                <label>Miles<input type="number" value="<%- locals.inv_miles %>"
+                                                placeholder="Enter the miles" name="inv_miles"></label>
+                                <small>Required</small>
+                                <label>Color<input type="text" value="<%- locals.inv_color %>"
+                                                placeholder="Enter the vehicle color" name="inv_color"></label>
+                                <small>Required</small>
+                                <label>Image<input type="text" value="/images/vehicles/no-image.png"
+                                                name="inv_image"></label>
+                                <small>Required</small>
+                                <label>Thumbnail<input type="text" value="/images/vehicles/no-image-tn.png"
+                                                name="inv_thumbnail"></label>
+                                <small>Required</small>
+                                <input type="submit" name="submit" value="UPDATE VEHICLE" disabled>
+                                <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>
+                                        "
+                                        <% } %>>
+                        </form>
+                        <script src="/js/inv-update.js"></script>

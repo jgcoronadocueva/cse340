@@ -1,0 +1,24 @@
+<h1 class="form-title"><%- title %></h1>
+<%- messages() %>
+
+    <% if (errors) { %>
+        <ul class="flash-message">
+            <% errors.array().filter(error=> error.msg !== "Invalid value").forEach(error=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+
+            <form class="form" id="loginForm" action="/account/login" method="post">
+                <label>Email<input type="email" name="account_email" required placeholder="Enter your email"
+                        autocomplete="email" value="<%= locals.account_email %>"></label>
+                <label>Password<input type="password" name="account_password" id="password" required
+                        placeholder="Enter your password"
+                        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"></label>
+                <input type="submit" value="LOGIN">
+            </form>
+            <div id="accountRegistration">
+                <span>No account? <a href="/account/registration">Sign-up</a></span>
+            </div>

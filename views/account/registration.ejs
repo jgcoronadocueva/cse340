@@ -1,0 +1,28 @@
+<h1 class="form-title"><%- title %></h1>
+<%- messages() %>
+
+    <% if (errors) { %>
+        <ul class="flash-message">
+            <% errors.array().filter(error=> error.msg !== "Invalid value").forEach(error=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+
+            <form class="form" id=registrationForm action="/account/registration" method="post">
+                <label>First name<input type="text" name="account_firstname" required
+                        placeholder="Enter your first name" value="<%= locals.account_firstname %>"></label>
+                <small>Required</small>
+                <label>Last name<input type="text" name="account_lastname" required placeholder="Enter your last name"
+                        value="<%= locals.account_lastname %>"></label>
+                <small>Required</small>
+                <label>Email address<input type="email" name="account_email" required placeholder="Enter your email"
+                        value="<%= locals.account_email %>"></label>
+                <small>Required</small>
+                <label>Password<input type="password" name="account_password" id="password" required
+                        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"></label>
+                <small>Must contain at least 12 characters including an uppercase, number and special character.</small>
+                <input type="submit" value="REGISTER">
+            </form>

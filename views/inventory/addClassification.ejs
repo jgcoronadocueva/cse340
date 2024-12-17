@@ -1,0 +1,18 @@
+<h1 class="form-title"><%- title %></h1>
+<%- messages() %>
+    <% if (errors) { %>
+        <ul class="flash-message">
+            <% errors.array().filter(error=> error.msg !== "Invalid value").forEach(error=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+
+            <form class="form" action="/inv/add-classification" method="post">
+                <label>CLASSIFICATION NAME<input type="text" name="classification_name" required
+                        value="<%= locals.classification_name %>" pattern="[0-9a-zA-Z]+"></label>
+                <small>Required. Cannot contain spaces or special characters.</small>
+                <input type="submit" value="ADD">
+            </form>

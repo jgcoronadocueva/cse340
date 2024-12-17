@@ -1,0 +1,13 @@
+<h1><%- title %></h1>
+<%- messages() %>
+    <% if (errors) { %>
+        <ul class="flash-message">
+            <% errors.array().filter(error=> error.msg !== "Invalid value").forEach(error=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+
+            <p>You're logged in</p>

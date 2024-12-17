@@ -1,0 +1,30 @@
+<h1><%- title %></h1>
+<%- messages() %>
+    <% if (errors) { %>
+        <ul class="flash-message">
+            <% errors.array().filter(error=> error.msg !== "Invalid value").forEach(error=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+
+            <ul class="no-bullet">
+                <li>
+                    <a href="/inv/add-classification">Add New Classification</a>
+                </li>
+                <li>
+                    <a href="/inv/add-inventory">Add New Vehicle</a>
+                </li>
+            </ul>
+            <h2>Manage Inventory</h2>
+            <div class="drop-down">
+                <p>Choose a classification to check the items within.</p>
+                <%- classificationSelect %>
+                    <table id="inventoryDisplay"></table>
+            </div>
+
+
+            <noscript>JavaScript must be enabled to use this page.</noscript>
+            <script src="../../js/inventory.js"></script>
