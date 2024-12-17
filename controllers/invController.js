@@ -188,10 +188,10 @@ invCont.buildEditInventory = async function (req, res, next) {
     const inventory_id = parseInt(req.params.inventoryId);
     const nav = await utilities.getNav();
 
-    const vehicleData = (await invModel.getVehicleByInventoryId(inventory_id))[0];
-    const name = `${vehicleData.inv_make} ${vehicleData.inv_model}`;
+    const vehicleData = (await invModel.getVehicleByInventoryId(inventory_id))[0]
+    const name = `${vehicleData.inv_make} ${vehicleData.inv_model}`
 
-    const classifications = await utilities.buildClassificationList(vehicleData.classification_id);
+    const classifications = await utilities.buildClassificationList(vehicleData.classification_id)
 
     res.render("inventory/editInventory", {
         title: "Edit " + name,
@@ -276,3 +276,73 @@ invCont.updateInventory = async function (req, res, next) {
     }
 };
 
+/* ***************************
+ *  Build delete inventory view
+ * ************************** */
+invCont.buildDeleteInventory = async function (req, res, next) {
+    const inventory_id = parseInt(req.params.inventoryId);
+    const nav = await utilities.getNav();
+
+    const vehicleData = (await invModel.getVehicleByInventoryId(inventory_id))[0]
+    const name = `${vehicleData.inv_make} ${vehicleData.inv_model}`;
+
+    res.render("inventory/deleteConfirm", {
+        title: "Delete " + name,
+        errors: null,
+        nav,
+        inv_id: vehicleData.inv_id,
+        inv_make: vehicleData.inv_make,
+        inv_model: vehicleData.inv_model,
+        inv_year: vehicleData.inv_year,
+        inv_price: vehicleData.inv_price,
+    });
+};
+
+/* ***************************
+ *  Carry the deletion process
+ * ************************** */
+invCont.deleteInventory = async function (req, res, next) {
+    const inventory_id = parseInt(req.body.inv_id);
+    const nav = await utilities.getNav();
+
+    const {
+        inv_id,
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_price,
+    } = req.body;
+
+    const response = await invModel.deleteInventory(
+        inv_id,
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_price,
+    );
+
+    if (response) {
+        const itemName = response.inv_make + " " + response.inv_model;
+        req.flash("success-message", `The ${itemName} has been deleted.`);
+        res.redirect("/inv/");
+    } else {
+        const classifications = await utilities.buildClassificationList(
+            classification_id
+        );
+        const itemName = `${inv_make} ${inv_model}`;
+        req.flash("failure-message", "Sorry, the vehicle was not deleted.");
+        res.status(501).render("inventory/deleteInventory", {
+            title: "Edit " + itemName,
+            nav,
+            errors: null,
+            classifications,
+            inv_id,
+            inv_make,
+            inv_model,
+            inv_year,
+            inv_price,
+        });
+    }
+};
+
+module.exports = invCont;

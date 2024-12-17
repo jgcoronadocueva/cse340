@@ -1,7 +1,7 @@
 <h1 class="form-title"><%- title %></h1>
 <%- messages() %>
         <% if (errors) { %>
-                <ul class="flash-message">
+                <ul class="failure-message">
                         <% errors.array().filter(error=> error.msg !== "Invalid value").forEach(error=> { %>
                                 <li>
                                         <%= error.msg %>
@@ -47,7 +47,7 @@
                                 <label>Thumbnail<input type="text" value="/images/vehicles/no-image-tn.png"
                                                 name="inv_thumbnail"></label>
                                 <small>Required</small>
-                                <input type="submit" name="submit" value="UPDATE VEHICLE" disabled>
+                                <input type="submit" name="submit" value="UPDATE" disabled>
                                 <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>
                                         "
                                         <% } %>>
