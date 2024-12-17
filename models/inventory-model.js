@@ -142,8 +142,8 @@ async function updateInventory(
  * Delete Vehicle from inventory
  *******************************/
 async function deleteInventory(inv_id) {
-   const sql = "DELETE FROM inventory WHERE inv_id = $1";
    try {
+      const sql = "DELETE FROM inventory WHERE inv_id = $1";
       const data = await pool.query(sql, [inv_id]);
       return data
    } catch (error) {

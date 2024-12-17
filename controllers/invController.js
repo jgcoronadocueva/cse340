@@ -302,8 +302,9 @@ invCont.buildDeleteInventory = async function (req, res, next) {
  *  Carry the deletion process
  * ************************** */
 invCont.deleteInventory = async function (req, res, next) {
-    const inventory_id = parseInt(req.body.inv_id);
+
     const nav = await utilities.getNav();
+    const inventory_id = parseInt(req.body.inv_id)
 
     const {
         inv_id,
@@ -311,28 +312,19 @@ invCont.deleteInventory = async function (req, res, next) {
         inv_model,
         inv_year,
         inv_price,
-    } = req.body;
+    } = req.body
 
-    const response = await invModel.deleteInventory(
-        inv_id,
-        inv_make,
-        inv_model,
-        inv_year,
-        inv_price,
-    );
+    const response = await invModel.deleteInventory(inventory_id)
 
     if (response) {
-        const itemName = response.inv_make + " " + response.inv_model;
+        const itemName = `${inv_make} ${inv_model}`;
         req.flash("success-message", `The ${itemName} has been deleted.`);
         res.redirect("/inv/");
     } else {
-        const classifications = await utilities.buildClassificationList(
-            classification_id
-        );
         const itemName = `${inv_make} ${inv_model}`;
         req.flash("failure-message", "Sorry, the vehicle was not deleted.");
         res.status(501).render("inventory/deleteInventory", {
-            title: "Edit " + itemName,
+            title: "Delete " + itemName,
             nav,
             errors: null,
             classifications,

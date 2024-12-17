@@ -16,6 +16,7 @@ validate.classificationRules = () => {
             .escape()
             .notEmpty()
             .isAlphanumeric()
+            .withMessage("Please provide a valid classification name.")
             .isLength({ min: 1 })
             .withMessage("Please provide a valid classification name.")
     ];
@@ -47,6 +48,10 @@ validate.checkClassificationData = async (req, res, next) => {
 validate.inventoryRules = () => {
     return [
         // Required fields that must be a string
+        body("classification_id")
+            .notEmpty()
+            .withMessage("Please choose a classification."),
+
         body("inv_make")
             .trim()
             .escape()
