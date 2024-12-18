@@ -71,6 +71,7 @@ validate.inventoryRules = () => {
             .escape()
             .notEmpty()
             .isNumeric()
+            .isLength({ max: 4 })
             .withMessage("A valid year is required."),
 
         body("inv_description")
@@ -80,25 +81,12 @@ validate.inventoryRules = () => {
             .isLength({ min: 1 })
             .withMessage("Please provide a description."),
 
-        body("inv_image")
-            .trim()
-            .escape()
-            .notEmpty()
-            .isLength({ min: 1 })
-            .withMessage("Please provide an image."),
-
-        body("inv_thumbnail")
-            .trim()
-            .escape()
-            .notEmpty()
-            .isLength({ min: 1 })
-            .withMessage("Please provide a thumbnail."),
-
         body("inv_price")
             .trim()
             .escape()
             .notEmpty()
             .isNumeric()
+            .isLength({ max: 9 })
             .withMessage("A valid price is required."),
 
         body("inv_miles")
@@ -113,7 +101,21 @@ validate.inventoryRules = () => {
             .escape()
             .notEmpty()
             .isLength({ min: 1 })
-            .withMessage("Please provide a color.")
+            .withMessage("Please provide a color."),
+
+        body("inv_image")
+            .trim()
+            .escape()
+            .notEmpty()
+            .isLength({ min: 1 })
+            .withMessage("Please provide an image."),
+
+        body("inv_thumbnail")
+            .trim()
+            .escape()
+            .notEmpty()
+            .isLength({ min: 1 })
+            .withMessage("Please provide a thumbnail."),
     ];
 };
 
