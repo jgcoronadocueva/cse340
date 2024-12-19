@@ -104,7 +104,7 @@ async function accountLogin(req, res) {
             } else {
                 res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
             }
-            return res.redirect("/account/")
+            return res.redirect("/account")
         }
         else {
             req.flash("message failure-message", "Please check your credentials and try again.")
@@ -121,6 +121,18 @@ async function accountLogin(req, res) {
 }
 
 /* ****************************************
+ *  Process logout request
+ * ************************************ */
+async function accountLogout(req, res) {
+    res.clearCookie("jwt")
+    delete res.locals.accountData
+    res.locals.loggedin = 0
+    req.flash("success-message", "You have successfully logged out!")
+    res.redirect("/")
+    return
+}
+
+/* ****************************************
 *  Deliver account management view
 * *************************************** */
 async function buildAccountManagement(req, res) {
@@ -133,11 +145,126 @@ async function buildAccountManagement(req, res) {
     return;
 }
 
+/* ****************************************
+ *  Deliver account update view
+ * *************************************** */
+async function buildUpdate(req, res, next) {
+    let nav = await utilities.getNav();
+
+    const accountData = await accountModel.getAccountById(req.params.accountId);
+    const { account_id, account_firstname, account_lastname, account_email } = accountData;
+    res.render("account/update", {
+        title: "Update Account",
+        nav,
+        errors: null,
+        account_id,
+        account_firstname,
+        account_lastname,
+        account_email
+    });
+}
+
+/* ****************************************
+ *  Process account information update
+ * *************************************** */
+async function updateAccount(req, res) {
+    let nav = await utilities.getNav();
+    const { account_id, account_firstname, account_lastname, account_email } = req.body;
+
+    const regResult = await accountModel.updateAccount(
+        account_id,
+        account_firstname,
+        account_lastname,
+        account_email
+    );
+
+    if (regResult) {
+        req.flash(
+            "success-message",
+            `Account information has been successfully updated.`
+        );
+
+        const accountData = await accountModel.getAccountById(account_id)
+
+        delete accountData.account_password
+        res.locals.accountData.account_firstname = accountData.account_firstname
+        res.locals.accountData.account_email = accountData.account_email
+        utilities.updateCookie(accountData, res)
+
+        res.status(201).render("account/accountManagement", {
+            title: "Account Management",
+            nav,
+            errors: null
+        });
+    } else {
+        req.flash("failure-message", "Sorry, the update failed.");
+        res.status(501).render("account/update", {
+            title: "Update Account",
+            nav,
+            errors: null,
+            account_id,
+            account_firstname,
+            account_lastname,
+            account_email
+        });
+    }
+}
+
+/* ****************************************
+ *  Process account password update
+ * *************************************** */
+async function updatePassword(req, res) {
+    let nav = await utilities.getNav()
+    const { account_id, account_password } = req.body
+
+    // Hash the password before storing.
+    let hashedPassword;
+    try {
+        // regular password and cost (salt is generated automatically)
+        hashedPassword = await bcrypt.hashSync(account_password, 10);
+    } catch (error) {
+        req.flash("failure-message", "Sorry, there was an error processing the password update."
+        );
+        res.status(500).render("account/update", {
+            title: "Update Account",
+            nav,
+            errors: null,
+        });
+    }
+
+    const regResult = await accountModel.updatePassword(
+        account_id,
+        hashedPassword);
+
+    if (regResult) {
+        req.flash(
+            "success-message",
+            `Password has been changed sucessfully.`
+        )
+        res.status(201).render("account/accountManagement", {
+            title: "Account Management",
+            nav,
+            errors: null
+        });
+    } else {
+        req.flash("failure-message", "Sorry, password could not be updated.");
+        res.status(501).render("account/update", {
+            title: "Update Account",
+            nav,
+            errors: null
+        });
+    }
+}
+
 //  Export modules
 module.exports = {
     buildLogin,
     buildRegistration,
     registerAccount,
     accountLogin,
-    buildAccountManagement
+    accountLogout,
+    buildAccountManagement,
+    buildUpdate,
+    updateAccount,
+    updatePassword
 }

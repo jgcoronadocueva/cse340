@@ -30,7 +30,7 @@ Util.getNav = async function (req, res, next) {
 * Build the classification view HTML
 * ************************************ */
 Util.buildClassificationGrid = async function (data) {
-  let grid
+  let grid = ""
   if (data.length > 0) {
     grid = '<ul id="inv-display">'
     data.forEach(vehicle => {
@@ -157,6 +157,37 @@ Util.checkJWTToken = (req, res, next) => {
 }
 
 /* ****************************************
+* Middleware to check account type for authorization
+**************************************** */
+Util.checkAccountType = (req, res, next) => {
+  if (req.cookies.jwt) {
+    jwt.verify(
+      req.cookies.jwt,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, accountData) {
+        if (err) {
+          req.flash("Please log in")
+          res.clearCookie("jwt")
+          return res.redirect("/account/login")
+        }
+        if (
+          accountData.account_type == "Employee" ||
+          accountData.account_type == "Admin"
+        ) {
+          next();
+        } else {
+          req.flash("failure-message", "Please log in with an employee or admin account");
+          return res.redirect("/account/login");
+        }
+      }
+    );
+  } else {
+    req.flash("failure-message", "Please log in with an employee or admin account");
+    return res.redirect("/account/login");
+  }
+}
+
+/* ****************************************
  *  Check Login
  * ************************************ */
 Util.checkLogin = (req, res, next) => {
@@ -167,6 +198,24 @@ Util.checkLogin = (req, res, next) => {
     return res.redirect("/account/login")
   }
 }
+
+/* ****************************************
+ *  Update the JWT cookie
+ * ************************************ */
+Util.updateCookie = (accountData, res) => {
+  const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: 3600,
+  });
+  if (process.env.NODE_ENV === "development") {
+    res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 });
+  } else {
+    res.cookie("jwt", accessToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 3600 * 1000,
+    });
+  }
+};
 
 // Export the module
 module.exports = Util
