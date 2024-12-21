@@ -17,7 +17,8 @@ const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
-const errorRoute = require("./routes/errorRoute.js");
+const errorRoute = require("./routes/errorRoute")
+const contactRoute = require("./routes/contactRoute")
 const utilities = require('./utilities/')
 const cookieParser = require("cookie-parser")
 
@@ -61,17 +62,11 @@ app.set("layout", "./layouts/layout") // not at views root
  *************************/
 app.use(static)
 
-// Index route
-app.get("/", utilities.handleErrors(baseController.buildHome))
-
-// Inventory route
-app.use("/inv", inventoryRoute)
-
-// Account route
-app.use("/account", accountRoute)
-
-// Error route
-app.use("/error", errorRoute);
+app.get("/", utilities.handleErrors(baseController.buildHome)) // Index route
+app.use("/inv", inventoryRoute) // Inventory route
+app.use("/account", accountRoute) // Account route
+app.use("/contactUs", contactRoute) //Contact Us route
+app.use("/error", errorRoute) // Error route
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {

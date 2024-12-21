@@ -51,6 +51,24 @@ header a {
   font-size: 2rem;
 }
 
+#tools {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+
+#tools a:first-child {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+#envelopeIcon {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
 /******* NAV RULES ***************/
 nav {
   color: var(--secondary-font-color);
@@ -405,6 +423,7 @@ input[type="email"],
 input[type="password"],
 input[type="text"],
 input[type="number"],
+input[type="tel"],
 textarea,
 select {
   width: 100%;
@@ -473,6 +492,10 @@ Use for screens wider than 700px
     border: 6px solid var(--secondary-background-color);
     border-radius: .5rem;
     margin: 10px auto;
+  }
+
+  #tools {
+    font-size: 14px;
   }
 
   .hero-container {
